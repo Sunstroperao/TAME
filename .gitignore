@@ -1,0 +1,12 @@
+*.pyc
+*.npy
+*.pth
+*.whl
+*.swp
+*.mat
+
+data/round/
+lightning_method/
+visualization/
+
+__pycache__/
