@@ -15,8 +15,8 @@ conda activate env_name
 pip install -r requirements.txt
 ```
 ### Prepare the dataset
-Download the ngsim dataset from [here](https://data.transportation.gov/Automobiles/Next-Generation-Simulation-NGSIM-Vehicle-Trajector/8ect-6jqj) and highD dataset from [here](https://www.highd-dataset.com/). Then use [preprocess_*.m](./data/) in the data folder to preprocess the dataset.
-### data structure
+Download the NGSIM US-101 and I-80 dataset from [here](https://data.transportation.gov/Automobiles/Next-Generation-Simulation-NGSIM-Vehicle-Trajector/8ect-6jqj) and highD dataset from [here](https://levelxdata.com/highd-dataset/). Then use [preprocess_*.m](./data/) in the data folder to preprocess the dataset.
+#### data structure
 ```
 data
 ├── ngsimdata
@@ -32,7 +32,9 @@ data
 ### Train the model
 ```bash
 cd method
-bash train.sh 
+bash train.sh # train the model in DDP mode
+or
+python train.py # train the model in single GPU mode
 ```
 ### Evaluate the model
 ```bash
@@ -50,6 +52,3 @@ If you find this work useful, please consider citing:
 }
 ```
 
-### License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-```
