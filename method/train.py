@@ -36,8 +36,6 @@ args.input_dim = 6
 CUDA_VISIBLE_DEVICES = 0
 os.environ["CUDA_VISIBLE_DEVICES"] = str(CUDA_VISIBLE_DEVICES)
 
-# Set the seed
-# seed_everything(seed=1234)
 
 # Initialize the network
 if args.network == 'highwaynet':
