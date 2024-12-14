@@ -3,27 +3,42 @@
 This is offical repository for the paper "Hybrid Attention-based Multi-task Vehicle Motion Prediction Using Non-Autoregressive Transformer and Mixture of Experts" by [Hao Jiang](https://sunstroperao.github.io/)
 
 ### Set up the environment
+#### method 1: using conda
 ```bash
 conda env create -f environment.yml
 conda activate motion_prediction
 ```
-### Download the dataset
-```bash 
-cd data
-bash download_data.sh
+#### method 2: using pip
+```bash
+conda create -n env_name python=3.10
+conda activate env_name
+pip install -r requirements.txt
 ```
+### Prepare the dataset
+Download the ngsim dataset from [here](https://data.transportation.gov/Automobiles/Next-Generation-Simulation-NGSIM-Vehicle-Trajector/8ect-6jqj) and highD dataset from [here](https://www.highd-dataset.com/). Then use [preprocess_*.m](./data/) in the data folder to preprocess the dataset.
+### data structure
+```
+data
+├── ngsimdata
+│   ├── TrainSet.mat
+│   ├── TestSet.mat
+│   ├── ValSet.mat
+├── highDdata
+│   ├── TrainSet.mat
+│   ├── TestSet.mat
+│   ├── ValSet.mat
+```
+
 ### Train the model
 ```bash
-python train.py --config config/transformer.yaml
+cd method
+bash train.sh 
 ```
 ### Evaluate the model
 ```bash
-python evaluate.py --config config/transformer.yaml
+python evaluate.py 
 ```
-### Visualize the prediction
-```bash
-python visualize.py --config config/transformer.yaml
-```
+
 ### Citation
 If you find this work useful, please consider citing:
 ```
@@ -34,8 +49,6 @@ If you find this work useful, please consider citing:
   year={2021}
 }
 ```
-### Acknowledgement
-This code is based on the [Trajectron++](https://sunstroperao.github.io/)
 
 ### License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
