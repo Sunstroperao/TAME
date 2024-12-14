@@ -1,0 +1,1 @@
+OMP_NUM_THREADS=12 CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node 4 train_ddp.py
