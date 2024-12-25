@@ -1,9 +1,3 @@
-# !/usr/bin/env python
-# -*-coding:utf-8 -*-
-# @File Name： position_encoding.py
-# @Time     :  2023/5/30
-# @Author   :  Jiang Hao
-# @Mail     :  jianghaotbs@163.com
 import math
 
 import torch

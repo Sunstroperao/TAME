@@ -1,9 +1,3 @@
-# !/usr/bin/env python
-# -*-coding:utf-8 -*-
-# @File Name： detr_net.py
-# @Time     :  2023/6/2
-# @Author   :  Jiang Hao
-# @Mail     :  jianghaotbs@163.com
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
@@ -54,7 +48,7 @@ class HighwayNet(nn.Module):
         self.output_longitudinal = nn.Linear(args.hidden_dim, args.lon_dim)
 
         # Initialize Mixture Experts module.
-        self.expert_gate = Expert_Gate(args.hidden_dim)
+        self.expert_gate = Expert_Gate(args.hidden_dim) # 128
 
         # Initialize activation and regularization functions.
         self.leaky_relu = nn.LeakyReLU(0.1)

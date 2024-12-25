@@ -1,15 +1,8 @@
-# !/usr/bin/env python
-# -*-coding:utf-8 -*-
-# @File Name： train.py
-# @Time     :  2023/5/30
-# @Author   :  Jiang Hao
-# @Mail     :  jianghaotbs@163.com
 import os
 import time
 
 import torch.nn as nn
 from highwaynet import HighwayNet
-from detr import DetrModel
 import torch
 import sys
 sys.path.append('..')
@@ -17,32 +10,25 @@ from tqdm import tqdm
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-# import wandb
 from torch.utils.data import DataLoader
 from utils import detr_loss, detr_test_mse, seed_everything
 from ngsim_dataset import NgsimDataset
-from config import get_args_parser, get_args_detr
-# from tensorboardX import SummaryWriter
+from config import get_args_parser
+
 
 args = get_args_parser().parse_args()  # get the args of HighwayNet
-# args = get_args_detr().parse_args()  # get the args of DetrModel
 
 # Set the args
 args.network = 'highwaynet'
-args.dataset = 'ngsim'
+args.dataset = 'highd'
 args.batch_size = 512
 args.input_dim = 6
 
 
 
-# Set the seed
-# seed_everything(seed=123456)
-
 # Initialize the network
 if args.network == 'highwaynet':
     net = HighwayNet(args)  # initialize the HighwayNet
-elif args.network == 'detr':
-    net = DetrModel(args)  # initialize the DetrModel
 
 
 args.local_rank = int(os.environ['LOCAL_RANK'])
@@ -54,21 +40,9 @@ torch.distributed.init_process_group(backend='nccl')
 
 device = torch.device(args.local_rank)
 
-
-# print the number of parameters
-if args.local_rank == 0:    
-    print('参数数目：', sum(param.numel() for param in net.parameters()))
 if args.use_cuda:
     net = net.to(device)
     net = DDP(net, device_ids=[args.local_rank], output_device=args.local_rank, find_unused_parameters=False)
-
-
-# visualization on tensorboard
-# if args.local_rank == 0:
-    # writer = SummaryWriter('logs/manet_{}_{}_ddp'.format(args.dataset, args.input_dim)) 
-    # wandb.init(project='MQNet', name='Detr_{}'.format(args.input_dim), config={"dataset": args.dataset,
-                                                                                                    #  "input_dim": args.input_dim,
-                                                                                                    #  "model": args.network,})
 
 
 # Initialize the optimizer and loss
@@ -97,13 +71,11 @@ valDataloader = DataLoader(valSet, batch_size=args.batch_size, num_workers=args.
 
 
 # Start training and validation
-step = 0
 best_val_loss = 100
 for epoch in range(args.epochs):
     trSampler.set_epoch(epoch)
 
     if args.local_rank == 0:
-        # trDataloader = tqdm(trDataloader)
         print("**********************" + 'Training Epoch:', str(epoch+1) + "**********************")
     avg_train_loss = 0
     avg_train_time = 0
@@ -162,12 +134,6 @@ for epoch in range(args.epochs):
                 .format(epoch+1, i / (len(trSet) / args.batch_size) * 100 * 4, avg_train_loss / 100, avg_lat_acc / 100,
                         avg_lon_acc / 100, avg_train_time / 100))
             
-            # visualization tensorboard
-            # writer.add_scalar('Train_Loss', avg_train_loss / 100, step)
-            # writer.add_scalars('Train_Acc', {'Lat_Acc': avg_lat_acc / 100, 'Lon_Acc': avg_lon_acc / 100}, step)
-            # wandb.log({"Train_Loss": avg_train_loss / 100, "Lat_Acc": avg_lat_acc / 100, "Lon_Acc": avg_lon_acc / 100, "step": step})
-            step += 1
-
             # set the zero
             avg_train_loss = 0
             avg_train_time = 0
@@ -230,19 +196,16 @@ for epoch in range(args.epochs):
                 epoch+1, avg_val_loss / val_batch_count, avg_val_lat_acc / val_batch_count,
                 avg_val_lon_acc / val_batch_count))
             
-            # visualization tensorboard
-            # writer.add_scalar('Val_Loss', avg_val_loss / val_batch_count, epoch)
-            # writer.add_scalars('Val_Acc', {'Lat_Acc': avg_val_lat_acc / val_batch_count, 'Lon_Acc': avg_val_lon_acc / val_batch_count}, epoch)
-            # wandb.log({"Val_Loss": avg_val_loss / val_batch_count, "VLat_Acc": avg_val_lat_acc / val_batch_count, "VLon_Acc": avg_val_lon_acc / val_batch_count, "epoch": epoch})
 
             # save the model
             if avg_val_loss / val_batch_count < best_val_loss:
                 best_val_loss = avg_val_loss / val_batch_count
                 print('\033[1;35mSaving the model...\033[0m')
-                torch.save(net.module.state_dict(), 'trained_model/{}/{}/best_weight.pth'.format(args.network, args.dataset))
+                save_path = f'checkpoints/{args.dataset}/'
+                if not os.path.exists(save_path):
+                    os.makedirs(save_path)
+                torch.save(net.module.state_dict(), os.path.join(save_path, 'best_weight.pth'))
                 print('\033[1;35mThe model is saved successfully!\033[0m')
 
 if args.local_rank == 0:
-    # writer.close()
-    # wandb.finish()
     print('Training is done!')
