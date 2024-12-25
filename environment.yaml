@@ -1,4 +1,4 @@
-name: pytorch
+name: tame
 channels:
   - pytorch
   - nvidia
