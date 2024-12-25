@@ -1,9 +1,3 @@
-# !/usr/bin/env python
-# -*-coding:utf-8 -*-
-# @File Name： dataset_process.py
-# @Time     :  2023/6/2
-# @Author   :  Jiang Hao
-# @Mail     :  jianghaotbs@163.com
 import numpy as np
 import torch
 from torch.utils.data import Dataset

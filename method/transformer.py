@@ -1,12 +1,5 @@
-# !/usr/bin/env python
-# -*-coding:utf-8 -*-
-# @File Name： transformer.py
-# @Time     :  2023/5/29
-# @Author   :  Jiang Hao
-# @Mail     :  jianghaotbs@163.com
 import copy
-from typing import Optional, List
-
+from typing import Optional
 import torch
 import torch.nn.functional as F
 from torch import nn, Tensor

@@ -1,5 +1,4 @@
 from tqdm import tqdm
-from tensorboardX import SummaryWriter
 from config import get_args_parser
 from ngsim_dataset import NgsimDataset
 from utils import detr_loss, detr_test_mse

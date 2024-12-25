@@ -1,6 +1,5 @@
 import os
 import time
-
 import torch.nn as nn
 from highwaynet import HighwayNet
 import torch

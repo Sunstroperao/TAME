@@ -10,3 +10,5 @@ lightning_method/
 visualization/
 
 __pycache__/
+
+checkpoints/
