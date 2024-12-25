@@ -9,7 +9,7 @@ This is offical repository for the paper "Hybrid Attention-based Multi-task Vehi
 ### Set up the environment
 #### method 1: using conda
 ```bash
-conda env create -f environment.yml
+conda env create -f environment.yaml
 conda activate tame
 ```
 #### method 2: using pip
