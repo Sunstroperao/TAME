@@ -49,7 +49,13 @@ python evaluate.py
 ### Citation
 If you find this work useful, please consider citing (coming soon):
 ```
-
+@article{jiang2024hybrid,
+  title={Hybrid Attention-based Multi-task Vehicle Motion Prediction Using Non-Autoregressive Transformer and Mixture of Experts},
+  author={Jiang, Hao and Hu, Chuan and Niu, Yixun and Yang, Biao and Chen, Hao and Zhang, Xi},
+  journal={IEEE Transactions on Intelligent Vehicles},
+  year={2024},
+  publisher={IEEE}
+}
 ```
 
 ### License
